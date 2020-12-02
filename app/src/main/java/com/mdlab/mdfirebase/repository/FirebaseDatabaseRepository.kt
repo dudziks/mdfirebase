@@ -9,7 +9,15 @@ abstract class FirebaseDatabaseRepository<Entity, Model>(private var mapper: Fir
 
     lateinit var firebaseCallback: FirebaseDatabaseRepositoryCallback<Model>
     lateinit var listener: BaseChildEventListener<Model, Entity>
+
+    /**
+     * Implement this function to return root path of your data
+     */
     abstract fun getRootNode(): String
+
+    /**
+     * Override this function, if you want to use query on the data.
+     */
     open fun mapDatabaseReference(dbRef: DatabaseReference): Query = dbRef
 
     private val databaseRefQuery: Query by lazy {
@@ -42,6 +50,7 @@ abstract class FirebaseDatabaseRepository<Entity, Model>(private var mapper: Fir
         mapDatabaseReference(getDatabaseReference()).removeEventListener(listener as ChildEventListener)
         mapDatabaseReference(getDatabaseReference()).removeEventListener(listener as ValueEventListener)
     }
+
 
     interface FirebaseDatabaseRepositoryCallback<T> {
         fun onAdded(result: List<T>)

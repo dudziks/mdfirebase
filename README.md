@@ -105,3 +105,15 @@ Tool for accessing firebase realtime database
 			}			
 		}
 
+## 7. Implement interface  FirebaseDatabaseRepositoryCallback:FirebaseDatabaseRepositoryCallback<T>
+
+
+    interface FirebaseDatabaseRepositoryCallback<T> {
+        fun onAdded(result: List<T>)
+        fun onAdded(result: T)
+        fun onError(e: Exception)
+        fun onChanged(result: T)
+        fun onRemoved(result: T)
+        fun onDataChange(result: DataSnapshot)
+    }
+

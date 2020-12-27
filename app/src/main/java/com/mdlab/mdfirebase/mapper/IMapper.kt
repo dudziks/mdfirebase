@@ -1,5 +1,6 @@
 package com.mdlab.mdfirebase.mapper
 
-interface IMapper<Entity, Model>  {
-    fun map(from: Entity?): Model?
+interface IMapper<DTO, Model>  {
+    fun mapFromDTO(from: DTO?): Model?
+    fun mapToDTO(from: Model?): DTO?
 }

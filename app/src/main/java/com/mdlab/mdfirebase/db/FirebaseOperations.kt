@@ -5,6 +5,7 @@ import com.google.firebase.database.Query
 import com.mdlab.mdfirebase.model.IDTO
 
 class FirebaseOperations : IFirebaseOperations{
+
     override fun deleteByKey(workingRef: Query, key: String?, onSuccessListener: () -> Unit): DataState<String> {
         return if (!key.isNullOrBlank()) {
             workingRef.ref.child(key).removeValue()

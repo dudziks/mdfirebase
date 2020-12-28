@@ -40,12 +40,10 @@ class FirebaseDAO<DTO, Model> private constructor(
     private val databaseRefQuery: Query by lazy {
         fbUser?.let{
             Firebase.database.reference.child(rootNodePath.get(it))
-            //(Firebase.app, rootNodePath.get(it)).reference
-//             FirebaseDatabase.getInstance().reference.child(rootNodePath.get(it))
         } ?:  exitProcess(1) // todo !!!!! it means user is not logged in
     }
 
-    val workingReference: Query get() = iMapDatabaseReference.invoke( databaseRefQuery.ref)
+    override val workingReference: Query get() = iMapDatabaseReference.invoke( databaseRefQuery.ref)
 
     override fun addListener(firebaseCallback: IFirebaseDatabaseRepositoryCallback<Model>) {
         this.firebaseCallback = firebaseCallback
@@ -58,12 +56,12 @@ class FirebaseDAO<DTO, Model> private constructor(
         workingReference.removeEventListener(listener as ValueEventListener)
     }
 
-    override fun deleteByKey(workingRef: Query, key: String?, onSuccessListener: () -> Unit): DataState<String> =
-            iFirebaseOperations.deleteByKey(workingRef, key, onSuccessListener)
+    override fun deleteByKey(key: String?, onSuccessListener: () -> Unit): DataState<String> =
+            iFirebaseOperations.deleteByKey(workingReference, key, onSuccessListener)
 
-    override fun ensureKey(workingRef: Query, key: String?): String =
-            iFirebaseOperations.ensureKey(workingRef, key)
+    override fun ensureKey(key: String?): String =
+            iFirebaseOperations.ensureKey(workingReference, key)
 
-    override fun storeToFirebase(workingRef: Query, theKey: String, dto: IDTO, onSuccessCallback: () -> Unit) =
-            iFirebaseOperations.storeToFirebase(workingRef, theKey, dto, onSuccessCallback)
+    override fun storeToFirebase(theKey: String, dto: IDTO, onSuccessCallback: () -> Unit) =
+            iFirebaseOperations.storeToFirebase(workingReference, theKey, dto, onSuccessCallback)
 }

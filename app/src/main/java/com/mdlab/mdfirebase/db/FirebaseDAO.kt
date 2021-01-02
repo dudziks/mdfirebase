@@ -49,6 +49,7 @@ class FirebaseDAO<DTO, Model> private constructor(
         this.firebaseCallback = firebaseCallback
         listener = ChildEventListener(mapper, firebaseCallback)
         workingReference.addChildEventListener(listener)
+        workingReference.addValueEventListener(listener)
     }
 
     override fun removeListener() {

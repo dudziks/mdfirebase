@@ -77,7 +77,7 @@ You can override all the callbacks commented out. There are empty default implem
    
 		 
 
-## 7. Use the class MyReo in your Viewmodel
+## 7. Use the class MyRepo in your Viewmodel
 
 class MyViewModel: ViewModel() {
 	val myRepo = MyRepo()

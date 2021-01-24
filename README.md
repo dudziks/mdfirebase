@@ -49,29 +49,29 @@ Tool for accessing firebase realtime database
 
 Example of class using instance of IFirebaseDAO<MyDTO, MyModel>
 
-class MyRepo {
+	class MyRepo {
 
-	private val dao: IFirebaseDAO<MyDTO, MyModel> =  FirebaseDAO.Builder<MyDTO, MyModel>()
-                .fbUser(Firebase.auth.currentUser)
-                .rootNodePath { "path/to/my/data" }
-                .mapper(MyMapper())
-                .build()
+		private val dao: IFirebaseDAO<MyDTO, MyModel> =  FirebaseDAO.Builder<MyDTO, MyModel>()
+			.fbUser(Firebase.auth.currentUser)
+			.rootNodePath { "path/to/my/data" }
+			.mapper(MyMapper())
+			.build()
 
 
-	@ExperimentalCoroutinesApi
-	fun getData(): Flow<MmyModel?> =callbackFlow {
-		dao.addListener(DefaultFirebaseDBCallback(
-		    onAddedCallback = { offer(it) }
-		    //onChangedCallback = { /* manage changed data */}
-		    //onAddedListCallback = { /* manage changed data */}
-		    //onRemovedCallback = { /* manage removed data */}
-		    //onDataChangedCallback = { /* manage changed data */}
-		    //onErrorCallback = { /* manage error */}		  
-		    
-		))
-		awaitClose { dao.removeListener()
-	}	
-}
+		@ExperimentalCoroutinesApi
+		fun getData(): Flow<MmyModel?> =callbackFlow {
+			dao.addListener(DefaultFirebaseDBCallback(
+			    onAddedCallback = { offer(it) }
+			    //onChangedCallback = { /* manage changed data */}
+			    //onAddedListCallback = { /* manage changed data */}
+			    //onRemovedCallback = { /* manage removed data */}
+			    //onDataChangedCallback = { /* manage changed data */}
+			    //onErrorCallback = { /* manage error */}		  
+
+			))
+			awaitClose { dao.removeListener()
+		}	
+	}
    
 You can override all the callbacks commented out. There are empty default implementation of each callback, so if you wont implement it, it will do nothing.
    
@@ -79,11 +79,11 @@ You can override all the callbacks commented out. There are empty default implem
 
 ## 7. Use the class MyRepo in your Viewmodel
 
-class MyViewModel: ViewModel() {
-	val myRepo = MyRepo()
+	class MyViewModel: ViewModel() {
+		val myRepo = MyRepo()
 
-	val liveData = liveData(Dispatchers.IO) {
-		myRepo.getData().collect { value -> emit(value) }
-	    }
-}
+		val liveData = liveData(Dispatchers.IO) {
+			myRepo.getData().collect { value -> emit(value) }
+		    }
+	}
 
